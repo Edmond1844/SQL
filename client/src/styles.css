@@ -1,0 +1,86 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #eef2f6;
+  color: #1c2633;
+}
+
+.page {
+  width: min(1100px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 48px 0;
+}
+
+.hero {
+  padding: 40px;
+  border-radius: 28px;
+  background: linear-gradient(135deg, #23395d, #5f7896);
+  color: white;
+  margin-bottom: 28px;
+}
+
+.eyebrow {
+  margin: 0 0 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 13px;
+  opacity: 0.8;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(36px, 6vw, 68px);
+}
+
+.heroText {
+  max-width: 640px;
+  margin: 18px 0 0;
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+.status {
+  padding: 18px 20px;
+  background: white;
+  border-radius: 16px;
+}
+
+.error {
+  color: #b00020;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  padding: 24px;
+  border-radius: 22px;
+  background: white;
+  box-shadow: 0 18px 40px rgba(28, 38, 51, 0.08);
+}
+
+.card h2 {
+  margin: 0 0 16px;
+  font-size: 24px;
+}
+
+.meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
+  font-weight: 700;
+  color: #3f6388;
+}
+
+.card p {
+  margin: 0;
+  line-height: 1.6;
+}
