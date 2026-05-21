@@ -1,5 +1,5 @@
 export default function Gides() {
-  const [tours, setTours] = React.useState([]);
+  const [gides, setGides] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
   const [error, setError] = React.useState("");
 

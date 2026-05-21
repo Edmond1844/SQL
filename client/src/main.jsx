@@ -4,7 +4,8 @@ import "./styles.css";
 
 function App() {
   const [tours, setTours] = React.useState([]);
-  const [guides, setGuides] = React.useState([]);
+  const [gides, setGuides] = React.useState([]);
+  const [hoteles, setHoteles] = React.useState([]);
 
   const [isLoading, setIsLoading] = React.useState(true);
   const [error, setError] = React.useState("");
@@ -13,6 +14,7 @@ function App() {
     Promise.all([
       fetch("http://localhost:3001/api/tours"),
       fetch("http://localhost:3001/api/guides"),
+      // fetch("http://localhost:3001/api/hoteles"),
     ])
       .then(([toursResponse, guidesResponse]) => {
         if (!toursResponse.ok) {
@@ -46,6 +48,17 @@ function App() {
           Данные хранятся в SQLite, сервер отдаёт их через API, а React выводит
           карточки туров и гидов.
         </p>
+      </section>
+      <section>
+        <ul>
+          <h2>Отели</h2>
+          {hoteles.map((hotel) => (
+            <li key={hotel.id}>
+              <h3>{hotel.name}</h3>
+              <p>{hotel.description}</p>
+            </li>
+          ))}
+        </ul>
       </section>
 
       {isLoading && <p className="status">Загружаем данные...</p>}
