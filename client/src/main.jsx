@@ -1,10 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./styles.css";
+import Gides from "./Gides";
 
 function App() {
   const [tours, setTours] = React.useState([]);
-  const [gides, setGides] = React.useState([]);
   const [hotels, setHotels] = React.useState([]);
 
   const [isLoading, setIsLoading] = React.useState(true);
@@ -13,31 +13,21 @@ function App() {
   React.useEffect(() => {
     Promise.all([
       fetch("http://localhost:3001/api/tours"),
-      fetch("http://localhost:3001/api/gides"),
       fetch("http://localhost:3001/api/hotels"),
     ])
-      .then(([toursResponse, gidesResponse, hotelsResponse]) => {
+      .then(([toursResponse, hotelsResponse]) => {
         if (!toursResponse.ok) {
           throw new Error("Ошибка загрузки туров");
-        }
-
-        if (!gidesResponse.ok) {
-          throw new Error("Ошибка загрузки гидов");
         }
 
         if (!hotelsResponse.ok) {
           throw new Error("Ошибка загрузки отелей");
         }
 
-        return Promise.all([
-          toursResponse.json(),
-          gidesResponse.json(),
-          hotelsResponse.json(),
-        ]);
+        return Promise.all([toursResponse.json(), hotelsResponse.json()]);
       })
-      .then(([toursData, gidesData, hotelsData]) => {
+      .then(([toursData, hotelsData]) => {
         setTours(toursData);
-        setGides(gidesData);
         setHotels(hotelsData);
       })
       .catch((err) => {
@@ -47,6 +37,8 @@ function App() {
         setIsLoading(false);
       });
   }, []);
+
+  console.log(tours);
 
   return (
     <main className="page">
@@ -59,15 +51,15 @@ function App() {
         </p>
       </section>
       <section>
-        <ul>
-          <h2>Отели</h2>
+        <h2>Отели</h2>
+        <div className="grid">
           {hotels.map((hotel) => (
-            <li key={hotel.id}>
+            <article className="card" key={hotel.id}>
               <h3>{hotel.name}</h3>
               <p>{hotel.description}</p>
-            </li>
+            </article>
           ))}
-        </ul>
+        </div>
       </section>
 
       {isLoading && <p className="status">Загружаем данные...</p>}
@@ -84,8 +76,14 @@ function App() {
                   <h3>{tour.title}</h3>
 
                   <div className="meta">
+                    <span>{tour.gide_name}</span>
                     <span>{tour.duration}</span>
                     <span>{tour.price}</span>
+                    <span>
+                      {tour.hotel_name === null
+                        ? "Отеля не будет"
+                        : tour.hotel_name}
+                    </span>
                   </div>
 
                   <p>{tour.description}</p>
@@ -93,24 +91,8 @@ function App() {
               ))}
             </div>
           </section>
-
           <section>
-            <h2 className="sectionTitle">Гиды</h2>
-
-            <div className="grid">
-              {gides.map((guide) => (
-                <article className="card" key={guide.id}>
-                  <h3>{guide.name}</h3>
-
-                  <div className="meta">
-                    <span>{guide.experience}</span>
-                    <span>{guide.language}</span>
-                  </div>
-
-                  <p>{guide.description}</p>
-                </article>
-              ))}
-            </div>
+            <Gides />
           </section>
         </>
       )}
