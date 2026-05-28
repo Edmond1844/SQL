@@ -4,8 +4,8 @@ import "./styles.css";
 
 function App() {
   const [tours, setTours] = React.useState([]);
-  const [gides, setGuides] = React.useState([]);
-  const [hoteles, setHoteles] = React.useState([]);
+  const [gides, setGides] = React.useState([]);
+  const [hotels, setHotels] = React.useState([]);
 
   const [isLoading, setIsLoading] = React.useState(true);
   const [error, setError] = React.useState("");
@@ -13,23 +13,32 @@ function App() {
   React.useEffect(() => {
     Promise.all([
       fetch("http://localhost:3001/api/tours"),
-      fetch("http://localhost:3001/api/guides"),
-      // fetch("http://localhost:3001/api/hoteles"),
+      fetch("http://localhost:3001/api/gides"),
+      fetch("http://localhost:3001/api/hotels"),
     ])
-      .then(([toursResponse, guidesResponse]) => {
+      .then(([toursResponse, gidesResponse, hotelsResponse]) => {
         if (!toursResponse.ok) {
           throw new Error("Ошибка загрузки туров");
         }
 
-        if (!guidesResponse.ok) {
+        if (!gidesResponse.ok) {
           throw new Error("Ошибка загрузки гидов");
         }
 
-        return Promise.all([toursResponse.json(), guidesResponse.json()]);
+        if (!hotelsResponse.ok) {
+          throw new Error("Ошибка загрузки отелей");
+        }
+
+        return Promise.all([
+          toursResponse.json(),
+          gidesResponse.json(),
+          hotelsResponse.json(),
+        ]);
       })
-      .then(([toursData, guidesData]) => {
+      .then(([toursData, gidesData, hotelsData]) => {
         setTours(toursData);
-        setGuides(guidesData);
+        setGides(gidesData);
+        setHotels(hotelsData);
       })
       .catch((err) => {
         setError(err.message);
@@ -52,7 +61,7 @@ function App() {
       <section>
         <ul>
           <h2>Отели</h2>
-          {hoteles.map((hotel) => (
+          {hotels.map((hotel) => (
             <li key={hotel.id}>
               <h3>{hotel.name}</h3>
               <p>{hotel.description}</p>
@@ -89,7 +98,7 @@ function App() {
             <h2 className="sectionTitle">Гиды</h2>
 
             <div className="grid">
-              {guides.map((guide) => (
+              {gides.map((guide) => (
                 <article className="card" key={guide.id}>
                   <h3>{guide.name}</h3>
 
