@@ -7,14 +7,13 @@ export default function Gides() {
 
   React.useEffect(() => {
     fetch("http://localhost:3001/api/gides")
-      .then(([gidesResponse]) => {
-        if (!gidesResponse.ok) {
+      .then((response) => {
+        if (!response.ok) {
           throw new Error("Ошибка загрузки гидов");
         }
-
-        return Promise.all([gidesResponse.json()]);
+        return response.json();
       })
-      .then(([gidesData]) => {
+      .then((gidesData) => {
         setGides(gidesData);
       })
       .catch((err) => {
@@ -24,7 +23,7 @@ export default function Gides() {
         setIsLoading(false);
       });
   }, []);
-  console.log(gides);
+
   return (
     <>
       <h2 className="sectionTitle">Гиды</h2>
